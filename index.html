@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chelsi Nath Prapti | CSE & Competitive Programmer Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Three.js CDN for interactive background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#08090E',
+                            card: '#0F121C',
+                            border: '#1E2538',
+                            cyan: '#00F0FF',
+                            magenta: '#FF007F',
+                            purple: '#A855F7',
+                            accent: '#10B981'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #08090E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E2538;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00F0FF;
+        }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(15, 18, 28, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-panel-hover:hover {
+            border-color: rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
+        }
+
+        /* Glow effects */
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+        }
+        .text-glow-cyan {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+        }
+        .text-glow-magenta {
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.6);
+        }
+
+        /* Scanline overlay for high-tech HUD feel */
+        .scanline {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 240, 255, 0.03) 50%,
+                rgba(0, 240, 255, 0.03)
+            );
+            background-size: 100% 4px;
+        }
+
+        /* HUD Profile border spinning animation */
+        @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-hud-spin {
+            animation: spin-slow 12s linear infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        .animate-hud-pulse {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-cyber-bg text-gray-200 font-sans antialiased selection:bg-cyber-cyan selection:text-black min-h-screen relative overflow-x-hidden">
+
+    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
+    <div class="fixed inset-0 scanline pointer-events-none z-0 opacity-40"></div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 glass-panel px-5 py-3 rounded-xl flex items-center space-x-3 border-l-4 border-cyber-cyan shadow-2xl">
+        <i id="toast-icon" class="fas fa-check-circle text-cyber-cyan"></i>
+        <span id="toast-message" class="font-mono text-sm">Copied to clipboard!</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 left-0 w-full z-40 glass-panel border-b border-cyber-border/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#hero" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-lg bg-cyber-card border border-cyber-cyan/40 flex items-center justify-center text-cyber-cyan font-mono font-bold text-lg group-hover:scale-105 group-hover:border-cyber-cyan transition-all">
+                    CNP
+                </div>
+                <div>
+                    <span class="font-mono font-bold text-lg tracking-wider text-white group-hover:text-cyber-cyan transition-colors">CHELSI<span class="text-cyber-cyan">.PRAPTI</span></span>
+                    <span class="block text-[10px] font-mono text-gray-400">DEV_ID // 0101835</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 font-mono text-sm">
+                <a href="#about" class="text-gray-300 hover:text-cyber-cyan transition-colors flex items-center space-x-1">
+                    <span class="text-cyber-cyan">//</span><span>About</span>
+                </a>
+                <a href="#skills" class="text-gray-300 hover:text-cyber-cyan transition-colors flex items-center space-x-1">
+                    <span class="text-cyber-cyan">//</span><span>Toolbox</span>
+                </a>
+                <a href="#projects" class="text-gray-300 hover:text-cyber-cyan transition-colors flex items-center space-x-1">
+                    <span class="text-cyber-cyan">//</span><span>Projects</span>
+                </a>
+                <a href="#education" class="text-gray-300 hover:text-cyber-cyan transition-colors flex items-center space-x-1">
+                    <span class="text-cyber-cyan">//</span><span>Education</span>
+                </a>
+                <a href="#contact" class="px-4 py-2 rounded-lg bg-cyber-cyan/10 border border-cyber-cyan/50 text-cyber-cyan hover:bg-cyber-cyan hover:text-black font-semibold transition-all shadow-lg hover:shadow-cyber-cyan/30">
+                    Get In Touch
+                </a>
+            </nav>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-cyber-cyan p-2 text-xl focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-cyber-border bg-cyber-card/95 backdrop-blur-lg px-6 py-4 space-y-3 font-mono text-sm">
+            <a href="#about" class="block py-2 text-gray-300 hover:text-cyber-cyan">// About</a>
+            <a href="#skills" class="block py-2 text-gray-300 hover:text-cyber-cyan">// Toolbox</a>
+            <a href="#projects" class="block py-2 text-gray-300 hover:text-cyber-cyan">// Projects</a>
+            <a href="#education" class="block py-2 text-gray-300 hover:text-cyber-cyan">// Education</a>
+            <a href="#contact" class="block py-2 text-cyber-cyan font-bold">// Get In Touch</a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="relative z-10 pt-20">
+
+        <section id="hero" class="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 relative">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Text Info -->
+                <div class="lg:col-span-7 space-y-6 text-left">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-cyber-card border border-cyber-cyan/30 font-mono text-xs text-cyber-cyan">
+                        <span class="w-2 h-2 rounded-full bg-cyber-cyan animate-ping"></span>
+                        <span>Available for Opportunities & Internships</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-none">
+                        Chelsi Nath <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-magenta text-glow-cyan">Prapti</span>
+                    </h1>
+
+                    <div class="font-mono text-lg sm:text-xl text-gray-300 flex items-center space-x-2 h-8">
+                        <span class="text-cyber-magenta">&gt;</span>
+                        <span id="typing-text" class="text-cyber-cyan font-semibold"></span>
+                        <span class="w-2.5 h-6 bg-cyber-cyan animate-pulse"></span>
+                    </div>
+
+                    <p class="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl">
+                        CSE Undergraduate at Daffodil International University. Passionate about solving complex algorithmic problems using C++ and building scalable backend software systems.
+                    </p>
+
+                    <!-- Details badge line -->
+                    <div class="flex flex-wrap gap-4 text-xs font-mono text-gray-400 pt-2">
+                        <div class="flex items-center space-x-1.5 px-3 py-1.5 rounded-md bg-cyber-card border border-cyber-border">
+                            <i class="fas fa-map-marker-alt text-cyber-magenta"></i>
+                            <span>Dhaka, Bangladesh</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5 px-3 py-1.5 rounded-md bg-cyber-card border border-cyber-border">
+                            <i class="fas fa-graduation-cap text-cyber-cyan"></i>
+                            <span>DIU CSE '29</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5 px-3 py-1.5 rounded-md bg-cyber-card border border-cyber-border">
+                            <i class="fas fa-code text-cyber-purple"></i>
+                            <span>CF Max Rating: 659</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-wrap gap-4 pt-4 font-mono text-sm">
+                        <a href="#contact" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyber-cyan to-blue-600 text-black font-bold hover:shadow-lg hover:shadow-cyber-cyan/40 transition-all flex items-center space-x-2">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Contact Me</span>
+                        </a>
+                        <a href="https://github.com/chelsi835" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl glass-panel text-white hover:text-cyber-cyan hover:border-cyber-cyan/60 transition-all flex items-center space-x-2">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub Profile</span>
+                        </a>
+                        <a href="#terminal-section" class="px-4 py-3 rounded-xl glass-panel text-cyber-purple hover:text-white hover:border-cyber-purple/60 transition-all flex items-center space-x-2">
+                            <i class="fas fa-terminal"></i>
+                            <span>Interactive CLI</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Interactive Profile Picture HUD -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-72 h-72 sm:w-80 sm:h-80 group">
+                        <!-- Spinning Outer Cyber Ring -->
+                        <div class="absolute inset-[-12px] rounded-full border-2 border-dashed border-cyber-cyan/40 animate-hud-spin"></div>
+                        <!-- Inner Glowing Ring -->
+                        <div class="absolute inset-[-4px] rounded-full bg-gradient-to-tr from-cyber-cyan via-cyber-purple to-cyber-magenta opacity-70 blur-md group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <!-- Main Image Container -->
+                        <div class="relative w-full h-full rounded-full overflow-hidden border-2 border-cyber-cyan/80 bg-cyber-card shadow-2xl z-10">
+                            <img 
+                                id="profile-img" 
+                                src="profile.jpg" 
+                                alt="Chelsi Nath Prapti Profile" 
+                                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                onerror="this.onerror=null; this.src='https://placehold.co/400x400/0F121C/00F0FF?text=Chelsi+Nath+Prapti';"
+                            >
+                            <!-- Overlay HUD Details -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6 text-center font-mono">
+                                <span class="text-xs text-cyber-cyan font-bold tracking-widest">// CHELSI NATH PRAPTI</span>
+                                <span class="text-[10px] text-gray-300">STATUS: ONLINE & CODING</span>
+                            </div>
+                        </div>
+
+                        <!-- Corner HUD Accents -->
+                        <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-cyber-cyan z-20"></div>
+                        <div class="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-cyber-cyan z-20"></div>
+                        <div class="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-cyber-cyan z-20"></div>
+                        <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-cyber-cyan z-20"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="terminal-section" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl border border-cyber-border">
+                <!-- Terminal Header Bar -->
+                <div class="bg-cyber-card px-4 py-3 border-b border-cyber-border flex items-center justify-between font-mono text-xs">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                        <span class="text-gray-400 ml-2">chelsi@diu-system:~</span>
+                    </div>
+                    <div class="text-gray-500 hidden sm:block">bash 5.2.15</div>
+                </div>
+
+                <!-- Terminal Body -->
+                <div id="terminal-body" class="p-5 font-mono text-sm min-h-[220px] max-h-[350px] overflow-y-auto space-y-3 bg-black/60">
+                    <div class="text-gray-400">Welcome to Chelsi's interactive terminal. Type <span class="text-cyber-cyan">'help'</span> for a list of available commands.</div>
+                    
+                    <div class="text-cyber-cyan">
+                        <span class="text-cyber-magenta">chelsi@portfolio:~$</span> ./welcome.sh
+                    </div>
+                    <div class="text-gray-300 leading-relaxed pl-2 border-l-2 border-cyber-cyan">
+                        &gt; CSE Undergraduate @ DIU<br>
+                        &gt; Focused on Competitive Programming & Software Engineering<br>
+                        &gt; Primary Language: C++ | Backend: Python/FastAPI
+                    </div>
+
+                    <!-- Dynamic output injected here -->
+                    <div id="terminal-output" class="space-y-3"></div>
+
+                    <!-- Input line -->
+                    <form id="terminal-form" class="flex items-center space-x-2 pt-2">
+                        <span class="text-cyber-magenta">chelsi@portfolio:~$</span>
+                        <input type="text" id="terminal-input" class="bg-transparent border-none outline-none text-cyber-cyan font-mono flex-1 focus:ring-0 text-sm" placeholder="type help, about, skills, projects, clear..." autocomplete="off">
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center space-y-3 mb-12">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-wide">
+                    <span class="text-cyber-cyan">//</span> ABOUT ME
+                </h2>
+                <p class="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+                    Passionate problem solver, algorithm enthusiast, and software craftsperson.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                <!-- About Bio Card -->
+                <div class="lg:col-span-7 glass-panel rounded-2xl p-6 sm:p-8 space-y-4 border border-cyber-border flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3 text-cyber-cyan font-mono text-sm">
+                            <i class="fas fa-user-code text-lg"></i>
+                            <span class="font-bold">BACKGROUND & PASSION</span>
+                        </div>
+                        <p class="text-gray-300 leading-relaxed text-sm sm:text-base">
+                            I'm a Computer Science & Engineering undergraduate at <strong class="text-white">Daffodil International University</strong>, passionate about building practical software, solving complex algorithmic problems, and turning ideas into efficient working systems.
+                        </p>
+                        <p class="text-gray-300 leading-relaxed text-sm sm:text-base">
+                            I work primarily with <strong class="text-cyber-cyan">C++</strong> for competitive programming while exploring backend engineering, REST APIs, full-stack web applications, and AI-powered tools.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-cyber-border/60">
+                        <div class="text-xs font-mono text-gray-400 mb-2">CURRENT FOCUS:</div>
+                        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono text-gray-300">
+                            <li class="flex items-center space-x-2"><i class="fas fa-check text-cyber-cyan text-[10px]"></i><span>Data Structures & Algorithms</span></li>
+                            <li class="flex items-center space-x-2"><i class="fas fa-check text-cyber-cyan text-[10px]"></i><span>FastAPI & REST Architecture</span></li>
+                            <li class="flex items-center space-x-2"><i class="fas fa-check text-cyber-cyan text-[10px]"></i><span>Hackathons & Prototyping</span></li>
+                            <li class="flex items-center space-x-2"><i class="fas fa-check text-cyber-cyan text-[10px]"></i><span>Linux & Open Source Tools</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- CP Track Record Highlight Card -->
+                <div class="lg:col-span-5 glass-panel rounded-2xl p-6 sm:p-8 border border-cyber-border flex flex-col justify-between relative overflow-hidden group">
+                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-cyber-purple/20 rounded-full blur-2xl group-hover:bg-cyber-cyan/20 transition-all"></div>
+                    
+                    <div class="space-y-4 relative z-10">
+                        <div class="flex items-center justify-between">
+                            <span class="text-cyber-magenta font-mono text-xs font-bold uppercase tracking-widest">// TRACK RECORD</span>
+                            <i class="fas fa-trophy text-yellow-400 text-xl"></i>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-white">Competitive Programming</h3>
+                        
+                        <div class="bg-black/50 rounded-xl p-4 border border-cyber-border space-y-2">
+                            <div class="flex justify-between items-center font-mono">
+                                <span class="text-gray-400 text-xs">Codeforces Rating</span>
+                                <span class="text-cyber-cyan font-bold text-lg">659</span>
+                            </div>
+                            <div class="w-full bg-cyber-border h-2 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-cyber-cyan to-cyber-purple h-full w-[40%] rounded-full"></div>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Regularly practice solving problems on topics including Dynamic Programming, Graph Algorithms, Trees, Sorting, and Greedy strategies to sharpen speed and algorithmic efficiency.
+                        </p>
+                    </div>
+
+                    <div class="pt-6 relative z-10">
+                        <a href="https://codeforces.com" target="_blank" class="text-xs font-mono text-cyber-cyan hover:underline flex items-center space-x-2">
+                            <span>View CP practice progress</span>
+                            <i class="fas fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center space-y-3 mb-12">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-wide">
+                    <span class="text-cyber-cyan">//</span> SKILLS & TOOLBOX
+                </h2>
+                <p class="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+                    Languages, technologies, frameworks, and hardware environments I work with.
+                </p>
+            </div>
+
+            <!-- Skills Categories Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Primary Skill Highlight -->
+                <div class="glass-panel glass-panel-hover rounded-2xl p-6 border border-cyber-cyan/40 bg-gradient-to-b from-cyber-card to-cyber-cyan/5 relative">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyber-cyan/20 border border-cyber-cyan flex items-center justify-center text-cyber-cyan text-xl">
+                            <i class="fas fa-terminal"></i>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-cyber-cyan/20 text-cyber-cyan text-[10px] font-mono font-bold uppercase">High Proficiency</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">C++ (Core)</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                        Primary language for competitive programming, algorithmic problem solving, memory optimization, and core software structures.
+                    </p>
+                    <div class="w-full bg-cyber-border h-2 rounded-full overflow-hidden">
+                        <div class="bg-cyber-cyan h-full w-[85%] rounded-full"></div>
+                    </div>
+                </div>
+
+                <!-- Programming Languages -->
+                <div class="glass-panel glass-panel-hover rounded-2xl p-6 border border-cyber-border">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-cyber-purple/20 border border-cyber-purple/40 flex items-center justify-center text-cyber-purple">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Languages</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 font-mono text-xs">
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">C</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-cyan/10 border border-cyber-cyan/50 text-cyber-cyan font-bold">C++</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">Java</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">Python</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">SQL</span>
+                    </div>
+                </div>
+
+                <!-- Frameworks & Technologies -->
+                <div class="glass-panel glass-panel-hover rounded-2xl p-6 border border-cyber-border">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-cyber-magenta/20 border border-cyber-magenta/40 flex items-center justify-center text-cyber-magenta">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Frameworks & Web</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 font-mono text-xs">
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">FastAPI</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">REST APIs</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">HTML5</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">CSS3</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">JavaScript</span>
+                    </div>
+                </div>
+
+                <!-- Databases -->
+                <div class="glass-panel glass-panel-hover rounded-2xl p-6 border border-cyber-border">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Databases</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 font-mono text-xs">
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">MySQL</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">SQLite</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">MongoDB</span>
+                    </div>
+                </div>
+
+                <!-- Tools & Platforms -->
+                <div class="glass-panel glass-panel-hover rounded-2xl p-6 border border-cyber-border">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Tools & Platforms</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 font-mono text-xs">
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">Git</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">GitHub</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">Linux</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">VS Code</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">MATLAB</span>
+                    </div>
+                </div>
+
+                <!-- Hardware & Electronics -->
+                <div class="glass-panel glass-panel-hover rounded-2xl p-6 border border-cyber-border">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Hardware & IoT</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2 font-mono text-xs">
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">Arduino</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">Sensors</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">NE555 Timer</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-cyber-card border border-cyber-border text-gray-200">Circuit Design</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="projects" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center space-y-3 mb-10">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-wide">
+                    <span class="text-cyber-cyan">//</span> SELECTED WORK
+                </h2>
+                <p class="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+                    Software projects spanning backend systems, data structure implementations, and electronics hardware prototypes.
+                </p>
+
+                <!-- Project Category Filters -->
+                <div class="flex flex-wrap justify-center gap-2 pt-4 font-mono text-xs">
+                    <button class="project-filter-btn px-4 py-2 rounded-xl bg-cyber-cyan text-black font-bold transition-all" data-filter="all">All Projects</button>
+                    <button class="project-filter-btn px-4 py-2 rounded-xl glass-panel text-gray-300 hover:text-cyber-cyan transition-all" data-filter="software">Software & Backend</button>
+                    <button class="project-filter-btn px-4 py-2 rounded-xl glass-panel text-gray-300 hover:text-cyber-cyan transition-all" data-filter="hardware">Electronics & Hardware</button>
+                </div>
+            </div>
+
+            <!-- Projects Cards Container -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Project 1: Energy Optimizer -->
+                <div class="project-card glass-panel glass-panel-hover rounded-2xl overflow-hidden border border-cyber-border flex flex-col justify-between" data-category="software">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono text-cyber-cyan px-2.5 py-1 rounded-md bg-cyber-cyan/10 border border-cyber-cyan/30">Backend API</span>
+                            <i class="fas fa-bolt text-yellow-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-cyber-cyan transition-colors">Energy Optimizer</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            A backend system designed to process energy-related data and generate optimized decisions through a structured API-based architecture.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 font-mono text-[11px] text-cyber-cyan">
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">Python</span>
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">FastAPI</span>
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">Pydantic</span>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 border-t border-cyber-border/40 mt-4 flex items-center justify-between font-mono text-xs">
+                        <a href="https://github.com/chelsi835" target="_blank" class="text-cyber-cyan hover:underline flex items-center space-x-1">
+                            <i class="fab fa-github"></i><span>Source Code</span>
+                        </a>
+                        <span class="text-gray-500">2024</span>
+                    </div>
+                </div>
+
+                <!-- Project 2: AI Health Assistant -->
+                <div class="project-card glass-panel glass-panel-hover rounded-2xl overflow-hidden border border-cyber-border flex flex-col justify-between" data-category="software">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono text-cyber-purple px-2.5 py-1 rounded-md bg-cyber-purple/10 border border-cyber-purple/30">AI & Backend</span>
+                            <i class="fas fa-heartbeat text-cyber-magenta"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">AI Health Assistant</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            An AI-powered project focused on providing an interactive health-assistance experience through a streamlined backend API framework.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 font-mono text-[11px] text-cyber-purple">
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">Python</span>
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">FastAPI</span>
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">AI APIs</span>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 border-t border-cyber-border/40 mt-4 flex items-center justify-between font-mono text-xs">
+                        <a href="https://github.com/chelsi835" target="_blank" class="text-cyber-cyan hover:underline flex items-center space-x-1">
+                            <i class="fab fa-github"></i><span>Source Code</span>
+                        </a>
+                        <span class="text-gray-500">2024</span>
+                    </div>
+                </div>
+
+                <!-- Project 3: Movie Theater Management System -->
+                <div class="project-card glass-panel glass-panel-hover rounded-2xl overflow-hidden border border-cyber-border flex flex-col justify-between" data-category="software">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono text-emerald-400 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30">C & Data Structures</span>
+                            <i class="fas fa-film text-cyber-cyan"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Movie Theater System</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            A console-based management system developed to demonstrate practical applications of Linked List, Stack, and Queue data structures.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 font-mono text-[11px] text-emerald-400">
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">C Lang</span>
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">Linked List</span>
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">Stack/Queue</span>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 border-t border-cyber-border/40 mt-4 flex items-center justify-between font-mono text-xs">
+                        <a href="https://github.com/chelsi835" target="_blank" class="text-cyber-cyan hover:underline flex items-center space-x-1">
+                            <i class="fab fa-github"></i><span>Source Code</span>
+                        </a>
+                        <span class="text-gray-500">2023</span>
+                    </div>
+                </div>
+
+                <!-- Project 4: Water Level Indicator -->
+                <div class="project-card glass-panel glass-panel-hover rounded-2xl overflow-hidden border border-cyber-border flex flex-col justify-between" data-category="hardware">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono text-amber-400 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/30">Electronics</span>
+                            <i class="fas fa-water text-blue-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Water Level Indicator</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            An electronics project designed to detect and indicate different water levels in real-time using a custom sensor-based circuit design.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 font-mono text-[11px] text-amber-400">
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">Sensors</span>
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">Electronics</span>
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">Circuits</span>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 border-t border-cyber-border/40 mt-4 flex items-center justify-between font-mono text-xs">
+                        <span class="text-gray-400"><i class="fas fa-microchip mr-1"></i>Hardware Lab</span>
+                        <span class="text-gray-500">2023</span>
+                    </div>
+                </div>
+
+                <!-- Project 5: LED Dimmer -->
+                <div class="project-card glass-panel glass-panel-hover rounded-2xl overflow-hidden border border-cyber-border flex flex-col justify-between" data-category="hardware">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono text-amber-400 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/30">Hardware Design</span>
+                            <i class="fas fa-lightbulb text-yellow-300"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">LED Dimmer PWM</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            A hardware project demonstrating continuous LED brightness control using Pulse Width Modulation (PWM) generated via an NE555 timer IC circuit.
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 font-mono text-[11px] text-amber-400">
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">NE555 Timer</span>
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">PWM</span>
+                            <span class="bg-cyber-card px-2 py-0.5 rounded border border-cyber-border">Breadboard</span>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 border-t border-cyber-border/40 mt-4 flex items-center justify-between font-mono text-xs">
+                        <span class="text-gray-400"><i class="fas fa-microchip mr-1"></i>Electronics Design</span>
+                        <span class="text-gray-500">2023</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="education" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center space-y-3 mb-12">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-wide">
+                    <span class="text-cyber-cyan">//</span> ACADEMIC TIMELINE
+                </h2>
+                <p class="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+                    Educational background and academic milestones.
+                </p>
+            </div>
+
+            <div class="relative border-l-2 border-cyber-border ml-4 sm:ml-32 space-y-12">
+
+                <!-- Education 1: B.Sc. DIU -->
+                <div class="relative pl-8 sm:pl-10 group">
+                    <!-- Dot marker -->
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-cyber-cyan border-4 border-cyber-bg group-hover:scale-125 transition-transform"></div>
+                    <!-- Date badge (Left side on desktop) -->
+                    <div class="sm:absolute sm:-left-36 sm:top-1 font-mono text-xs text-cyber-cyan font-bold mb-2 sm:mb-0">
+                        2025 — 2029 (Expected)
+                    </div>
+                    <!-- Card Body -->
+                    <div class="glass-panel p-6 rounded-2xl border border-cyber-border space-y-2">
+                        <span class="text-[10px] font-mono text-cyber-cyan uppercase tracking-wider">// UNDERGRADUATE</span>
+                        <h3 class="text-xl font-bold text-white">B.Sc. in Computer Science & Engineering</h3>
+                        <p class="text-sm text-gray-300">Daffodil International University, Dhaka</p>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Focusing on algorithms, data structures, backend engineering, software design, and competitive programming.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Education 2: HSC -->
+                <div class="relative pl-8 sm:pl-10 group">
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-cyber-purple border-4 border-cyber-bg group-hover:scale-125 transition-transform"></div>
+                    <div class="sm:absolute sm:-left-36 sm:top-1 font-mono text-xs text-cyber-purple font-bold mb-2 sm:mb-0">
+                        2021 — 2023
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl border border-cyber-border space-y-2">
+                        <span class="text-[10px] font-mono text-cyber-purple uppercase tracking-wider">// HIGHER SECONDARY</span>
+                        <h3 class="text-xl font-bold text-white">Higher Secondary Certificate (Science)</h3>
+                        <p class="text-sm text-gray-300">Comilla Government Women's College, Comilla</p>
+                        <div class="inline-block px-3 py-1 rounded-md bg-cyber-purple/10 border border-cyber-purple/30 font-mono text-xs text-cyber-purple font-bold">
+                            GPA 4.80 / 5.00
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education 3: SSC -->
+                <div class="relative pl-8 sm:pl-10 group">
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-cyber-magenta border-4 border-cyber-bg group-hover:scale-125 transition-transform"></div>
+                    <div class="sm:absolute sm:-left-36 sm:top-1 font-mono text-xs text-cyber-magenta font-bold mb-2 sm:mb-0">
+                        2019 — 2020
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl border border-cyber-border space-y-2">
+                        <span class="text-[10px] font-mono text-cyber-magenta uppercase tracking-wider">// SECONDARY SCHOOL</span>
+                        <h3 class="text-xl font-bold text-white">Secondary School Certificate (Science)</h3>
+                        <p class="text-sm text-gray-300">Lakshmipur Government Girls High School, Lakshmipur</p>
+                        <div class="inline-block px-3 py-1 rounded-md bg-cyber-magenta/10 border border-cyber-magenta/30 font-mono text-xs text-cyber-magenta font-bold">
+                            GPA 5.00 / 5.00 (Golden)
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="contact" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 mb-12">
+            <div class="glass-panel rounded-3xl p-8 sm:p-12 border border-cyber-border relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-cyber-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Contact Info & Quick Copies -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div>
+                            <span class="text-cyber-cyan font-mono text-xs font-bold tracking-widest uppercase">// GET IN TOUCH</span>
+                            <h2 class="text-3xl font-extrabold text-white mt-1">Let's build something worth solving.</h2>
+                        </div>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Open to software engineering internships, hackathons, collaborative projects, and open-source opportunities.
+                        </p>
+
+                        <div class="space-y-3 font-mono text-xs">
+                            <!-- Email Copy Item -->
+                            <div class="p-3.5 rounded-xl bg-cyber-card border border-cyber-border flex items-center justify-between group hover:border-cyber-cyan/50 transition-colors">
+                                <div class="flex items-center space-x-3 truncate">
+                                    <i class="fas fa-envelope text-cyber-cyan text-base"></i>
+                                    <span class="text-gray-300 truncate">chelsiprapti2025@gmail.com</span>
+                                </div>
+                                <button onclick="copyToClipboard('chelsiprapti2025@gmail.com', 'Email copied!')" class="p-2 text-gray-400 hover:text-cyber-cyan transition-colors" title="Copy email">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+
+                            <!-- Phone Copy Item -->
+                            <div class="p-3.5 rounded-xl bg-cyber-card border border-cyber-border flex items-center justify-between group hover:border-cyber-cyan/50 transition-colors">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-phone-alt text-cyber-purple text-base"></i>
+                                    <span class="text-gray-300">+880 1766 139553</span>
+                                </div>
+                                <button onclick="copyToClipboard('+8801766139553', 'Phone number copied!')" class="p-2 text-gray-400 hover:text-cyber-purple transition-colors" title="Copy phone">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+
+                            <!-- GitHub Copy Item -->
+                            <div class="p-3.5 rounded-xl bg-cyber-card border border-cyber-border flex items-center justify-between group hover:border-cyber-cyan/50 transition-colors">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fab fa-github text-cyber-magenta text-base"></i>
+                                    <span class="text-gray-300">github.com/chelsi835</span>
+                                </div>
+                                <a href="https://github.com/chelsi835" target="_blank" class="p-2 text-gray-400 hover:text-cyber-magenta transition-colors" title="Open GitHub">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form simulation -->
+                    <div class="lg:col-span-7">
+                        <form id="contact-form" class="space-y-4">
+                            <div>
+                                <label class="block font-mono text-xs text-gray-400 mb-1">YOUR NAME</label>
+                                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-black/50 border border-cyber-border text-white text-sm focus:border-cyber-cyan focus:outline-none transition-colors" placeholder="e.g. Alex Mercer">
+                            </div>
+                            <div>
+                                <label class="block font-mono text-xs text-gray-400 mb-1">EMAIL ADDRESS</label>
+                                <input type="email" required class="w-full px-4 py-3 rounded-xl bg-black/50 border border-cyber-border text-white text-sm focus:border-cyber-cyan focus:outline-none transition-colors" placeholder="alex@example.com">
+                            </div>
+                            <div>
+                                <label class="block font-mono text-xs text-gray-400 mb-1">MESSAGE</label>
+                                <textarea rows="4" required class="w-full px-4 py-3 rounded-xl bg-black/50 border border-cyber-border text-white text-sm focus:border-cyber-cyan focus:outline-none transition-colors" placeholder="Hi Chelsi, let's connect..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-magenta text-black font-mono font-bold hover:shadow-lg hover:shadow-cyber-cyan/30 transition-all">
+                                SEND MESSAGE
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-cyber-border/60 py-8 text-center font-mono text-xs text-gray-500 relative z-10">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+                Designed & Built by <span class="text-cyber-cyan">Chelsi Nath Prapti</span>
+            </div>
+            <div>
+                Dhaka, Bangladesh &bull; CSE @ DIU
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* Clipboard Notification Toast Function */
+        function copyToClipboard(text, msg) {
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                const toastMsg = document.getElementById('toast-message');
+                toastMsg.innerText = msg || 'Copied to clipboard!';
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 2500);
+            });
+        }
+
+        /* Dynamic Roles Typing Effect */
+        const roles = [
+            "Competitive Programmer",
+            "Aspiring Software Engineer",
+            "C++ Algorithm Enthusiast",
+            "Backend Systems Explorer"
+        ];
+        let roleIdx = 0;
+        let charIdx = 0;
+        let isDeleting = false;
+        const typingEl = document.getElementById('typing-text');
+
+        function typeLoop() {
+            const currentRole = roles[roleIdx];
+            if (isDeleting) {
+                typingEl.textContent = currentRole.substring(0, charIdx - 1);
+                charIdx--;
+            } else {
+                typingEl.textContent = currentRole.substring(0, charIdx + 1);
+                charIdx++;
+            }
+
+            let speed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIdx === currentRole.length) {
+                speed = 2000; // Pause at full word
+                isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false;
+                roleIdx = (roleIdx + 1) % roles.length;
+                speed = 500;
+            }
+
+            setTimeout(typeLoop, speed);
+        }
+
+        const terminalForm = document.getElementById('terminal-form');
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalOutput = document.getElementById('terminal-output');
+
+        const commands = {
+            help: `Available commands:<br>
+                - <span class="text-cyber-cyan">about</span>: Brief summary about Chelsi<br>
+                - <span class="text-cyber-cyan">skills</span>: List primary tech stack & tools<br>
+                - <span class="text-cyber-cyan">projects</span>: View key project highlights<br>
+                - <span class="text-cyber-cyan">contact</span>: Show contact details<br>
+                - <span class="text-cyber-cyan">clear</span>: Clear terminal window`,
+            
+            about: `Computer Science & Engineering undergraduate at Daffodil International University.<br>Passionate about algorithmic problem solving (C++) and backend development (Python/FastAPI).`,
+            
+            skills: `Languages: C, C++, Java, Python, SQL<br>Frameworks: FastAPI, REST APIs, HTML/CSS/JS<br>Databases: MySQL, SQLite, MongoDB<br>Tools: Git, Linux, VS Code, Arduino`,
+            
+            projects: `1. Energy Optimizer (Python, FastAPI)<br>2. AI Health Assistant (FastAPI, AI)<br>3. Movie Theater Management System (C Data Structures)<br>4. Water Level Indicator (Electronics)`,
+            
+            contact: `Email: chelsiprapti2025@gmail.com<br>Phone: +8801766139553<br>GitHub: github.com/chelsi835<br>Location: Dhaka, Bangladesh`
+        };
+
+        terminalForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const cmd = terminalInput.value.trim().toLowerCase();
+            
+            if (cmd === 'clear') {
+                terminalOutput.innerHTML = '';
+                terminalInput.value = '';
+                return;
+            }
+
+            const cmdLine = document.createElement('div');
+            cmdLine.className = 'text-cyber-cyan';
+            cmdLine.innerHTML = `<span class="text-cyber-magenta">chelsi@portfolio:~$</span> ${cmd}`;
+            terminalOutput.appendChild(cmdLine);
+
+            const resLine = document.createElement('div');
+            resLine.className = 'text-gray-300 pl-2 border-l-2 border-cyber-cyan/50 my-1';
+
+            if (commands[cmd]) {
+                resLine.innerHTML = commands[cmd];
+            } else if (cmd !== '') {
+                resLine.innerHTML = `Command not recognized: <span class="text-red-400">${cmd}</span>. Type <span class="text-cyber-cyan">'help'</span> for options.`;
+            }
+
+            terminalOutput.appendChild(resLine);
+            terminalInput.value = '';
+            
+            const termBody = document.getElementById('terminal-body');
+            termBody.scrollTop = termBody.scrollHeight;
+        });
+
+        /* Filterable Projects Logic */
+        const filterBtns = document.querySelectorAll('.project-filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-cyber-cyan', 'text-black', 'font-bold');
+                    b.classList.add('glass-panel', 'text-gray-300');
+                });
+                btn.classList.remove('glass-panel', 'text-gray-300');
+                btn.classList.add('bg-cyber-cyan', 'text-black', 'font-bold');
+
+                const filter = btn.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        /* Mobile Nav Toggle */
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        /* Contact Form Submit Handler */
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            copyToClipboard('', 'Message sent successfully!');
+            e.target.reset();
+        });
+
+        let scene, camera, renderer, particles;
+        let mouseX = 0, mouseY = 0;
+
+        function initThreeJS() {
+            const canvas = document.getElementById('bg-canvas');
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 400;
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Particles
+            const particleCount = 700;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            const color1 = new THREE.Color(0x00F0FF); // Cyan
+            const color2 = new THREE.Color(0xA855F7); // Purple
+
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 1200;
+                positions[i + 1] = (Math.random() - 0.5) * 1200;
+                positions[i + 2] = (Math.random() - 0.5) * 1200;
+
+                const mixedColor = color1.clone().lerp(color2, Math.random());
+                colors[i] = mixedColor.r;
+                colors[i + 1] = mixedColor.g;
+                colors[i + 2] = mixedColor.b;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 2.5,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.7
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX - window.innerWidth / 2) * 0.05;
+                mouseY = (e.clientY - window.innerHeight / 2) * 0.05;
+            });
+
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animateThreeJS() {
+            requestAnimationFrame(animateThreeJS);
+
+            particles.rotation.y += 0.001;
+            particles.rotation.x += 0.0005;
+
+            camera.position.x += (mouseX - camera.position.x) * 0.03;
+            camera.position.y += (-mouseY - camera.position.y) * 0.03;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+
+        window.onload = function() {
+            typeLoop();
+            initThreeJS();
+            animateThreeJS();
+        };
+    </script>
+</body>
+</html>
